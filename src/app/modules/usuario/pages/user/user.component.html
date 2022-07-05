@@ -1,0 +1,73 @@
+
+
+<div class="p-3">
+    <mat-card class="mat-elevation-z3">
+        <mat-card-header>
+            <mat-card-title *ngIf="!modeAdd"> {{constants.TITLE_EDIT}} </mat-card-title>
+            <mat-card-title *ngIf="modeAdd">{{constants.TITLE_ADD}} </mat-card-title>
+          </mat-card-header>
+      <mat-card-content style="margin-left: 1.15em">
+            <form  class="mat-dialog-content" [formGroup]="userForm" (ngSubmit)="submit()">
+                <div class="form-row">
+
+                    <mat-form-field class="col-12 col-sm-6 col-lg-4 p-2">
+                        <input matInput #input class="form-control" placeholder="{{constants.DATA_USER.username}}" formControlName="username">
+                        <mat-error *ngIf="this.userForm.controls.username.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-sm-6 col-lg-4 p-2">
+                        <input matInput #input class="form-control" placeholder="{{constants.DATA_USER.name}}" formControlName="name">
+                        <mat-error *ngIf="this.userForm.controls.name.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-sm-6 col-lg-4 p-2">
+                        <input matInput #input class="form-control" placeholder="{{constants.DATA_USER.surnames}}" formControlName="surnames">
+                        <mat-error *ngIf="this.userForm.controls.surnames.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-sm-6 col-lg-4 p-2">
+                        <input matInput #input class="form-control" placeholder="{{constants.DATA_USER.age}}" formControlName="age">
+                        <mat-error *ngIf="this.userForm.controls.age.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  class="col-12 col-sm-6 col-lg-4 p-2">
+                        <input matInput #input class="form-control" placeholder="{{constants.DATA_USER.email}}" formControlName="email">
+                        <mat-error *ngIf="this.userForm.controls.email.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                        <mat-error *ngIf="this.userForm.controls.email.hasError('email')">Email must be a valid email address</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-sm-6 col-lg-4 p-2">
+                        <input matInput #input class="form-control" placeholder="{{constants.DATA_USER.password}}" formControlName="password" [type]="hide ? 'password' : 'text'">
+                        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-error *ngIf="this.userForm.controls.password.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                        <mat-error *ngIf="this.userForm.controls.password.hasError('minlength')">Password must be at least 8 characters</mat-error>
+
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-sm-6 col-lg-4 p-2">
+                        <mat-select formControlName="active" placeholder="{{constants.DATA_USER.active}}">
+                          <mat-option  *ngFor="let item of selectActive" [(value)]="item.value">{{item.description}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="this.userForm.controls.active.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                      </mat-form-field>
+
+                    <mat-form-field class="col-12 col-sm-6 col-lg-4 p-2" *ngIf="!modeAdd">
+                    <input matInput class="form-control" placeholder="{{constants.DATA_USER.lastLoggin}}" formControlName="lastLoggin">
+                    <mat-error *ngIf="this.userForm.controls.email.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-sm-6 col-lg-4 p-2" *ngIf="!modeAdd">
+                    <input matInput #input class="form-control" placeholder="{{constants.DATA_USER.creationDate}}" formControlName="creationDate">
+                    <mat-error *ngIf="this.userForm.controls.creationDate.hasError('required')">{{constants.REQUIRED}}</mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="form-group">
+                    <button mat-raised-button color="primary" [disabled]="loading" type="submit" class="m-3">{{constants.BTN_SAVE}}</button>
+                    <button mat-raised-button type="button" (click)="cancel()">{{constants.BTN_CANCEL}}</button>
+                </div>
+            </form>
+      </mat-card-content>
+      </mat-card>
+  </div>
