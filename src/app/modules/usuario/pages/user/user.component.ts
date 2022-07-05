@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user.model';
 import { UserService } from '../../services/user.service';
 import { Location } from '@angular/common';
 import { UserConstants } from '../../user-constants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user',
@@ -16,7 +17,6 @@ export class UserComponent implements OnInit, OnDestroy {
   public modeAdd = false;
   private idUser: number = null;
 
-  loading = false;
   hide = true;
 
   userForm!: FormGroup;
@@ -24,13 +24,15 @@ export class UserComponent implements OnInit, OnDestroy {
   private suscripciones: Subscription = new Subscription();
 
   public selectActive = [{value: true, description: 'Yes'}, {value: false, description: 'No'}];
-
+  numberRegEx = /^[0-9]*$/;
+  stringRegEx = /^[a-zA-Z ]*$/;
 
   constructor(private readonly userServive: UserService,
     public readonly constants: UserConstants,
     private readonly route: ActivatedRoute,
     private fb: FormBuilder,
-    private readonly location: Location
+    private readonly location: Location,
+    private _snackBar: MatSnackBar
     ) { }
 
   ngOnInit(): void {
@@ -48,30 +50,32 @@ export class UserComponent implements OnInit, OnDestroy {
     this.userForm = this.fb.group({
       idUser: ['', !this.modeAdd ? Validators.required : Validators.nullValidator],
       username: ['', Validators.required],
-      name: ['',Validators.required],
-      surnames: ['', Validators.required],
+      name: ['', [Validators.required, Validators.pattern(this.stringRegEx)]],
+      surnames: ['', [Validators.required, Validators.pattern(this.stringRegEx)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      age: [null, Validators.required],
+      age: [null, [Validators.required, Validators.pattern(this.numberRegEx)]],
       active: [false, Validators.required],
       lastLoggin: [{value:'',disabled:true},],
       creationDate: [{value:'',disabled:true}, !this.modeAdd ? Validators.required : Validators.nullValidator]
     });
 
     !this.modeAdd ? this.getUser() : null;
-    console.log(this.modeAdd)
   }
 
   private getUser(): void {
-    this.userServive.getUserById(this.idUser).subscribe(
+    const sus = this.userServive.getUserById(this.idUser).subscribe(
       res => {
         this.userForm.patchValue(res);
+      }, error => {
+        this._snackBar.open('Failed to fetch user', '', { duration: 5000 });
       }
     )
+    this.suscripciones.add(sus);
+
   }
 
   submit() {
-    console.log(this.userForm)
     if (this.userForm.valid) {
       this.modeAdd ? this.createUser() : this.editUser();
     }    
@@ -79,14 +83,28 @@ export class UserComponent implements OnInit, OnDestroy {
 
   private createUser() {
     const user: User = this.userForm.value;
-    console.log(user);
-    this.loading = false;
+    const sus = this.userServive.createUser(user).subscribe(
+      res => {
+        this._snackBar.open('User created successfully', '', { duration: 5000 });
+        this.cancel();
+      }, error => {
+          this._snackBar.open('Error: Failed to create user.', '', { duration: 5000 });        
+      }      
+    );
+    this.suscripciones.add(sus);    
   }
 
   private editUser() {
     const user: User = this.userForm.value;
-    console.log(user);
-    this.loading = false;
+    const sus = this.userServive.editUser(user).subscribe(
+      res => {
+        this._snackBar.open('User edited successfully', '', { duration: 5000 });
+        this.cancel();
+      }, error => {
+          this._snackBar.open('Error: Failed to edit user.', '', { duration: 5000 });        
+      } 
+    );
+    this.suscripciones.add(sus);
   }
 
   public cancel() {

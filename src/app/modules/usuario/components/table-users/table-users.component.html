@@ -1,0 +1,40 @@
+<mat-table [dataSource]="usersList" class="mat-elevation-z8">
+
+    <!-- Username Column -->
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef> {{constants.DATA_USER.username}} </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> {{constants.DATA_USER.name}} </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <!-- Surnames Column -->
+    <ng-container matColumnDef="surnames">
+      <mat-header-cell *matHeaderCellDef> {{constants.DATA_USER.surnames}} </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.surnames}} </mat-cell>
+    </ng-container>
+
+    <!-- Active Column -->
+    <ng-container matColumnDef="active">
+      <mat-header-cell *matHeaderCellDef> {{constants.DATA_USER.active}} </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.active ? 'Yes' : 'No'}} </mat-cell>
+    </ng-container>
+
+    <!-- Actions Buttons -->
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> {{constants.DATA_USER.actions}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> 
+            <!-- Librería creada -->
+            <lib-libreriaBotonLaura [colorIcon]="'primary'" [nameIcon]="'edit'" [tooltipIcon]="'Edit'" (clickBotonEmitter)="editUser(element.idUser)"></lib-libreriaBotonLaura>
+            <lib-libreriaBotonLaura [colorIcon]="'primary'" [nameIcon]="'delete'" [tooltipIcon]="'Delete'" (clickBotonEmitter)="deleteUser(element.idUser)"></lib-libreriaBotonLaura>
+        </mat-cell>
+      </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+  </mat-table>

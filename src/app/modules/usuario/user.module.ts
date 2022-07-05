@@ -3,7 +3,6 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatTableModule} from '@angular/material/table';
-import { LibreriaBotonLauraModule } from 'projects/libreria-boton-laura/src/public-api';
 import { SharedModule } from 'src/app/shared/shared.module';
 import {MatCardModule} from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +15,11 @@ import { UserRoutingModule } from './user-routing.module';
 import { UserConstants } from './user-constants';
 import { UserComponent } from './pages/user/user.component';
 import { ConsultUsersComponent } from './pages/consult-users/consult-users.component';
-
+import { LibreriaBotonLauraModule } from 'libreria-boton-laura';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { TableUsersComponent } from './components/table-users/table-users.component';
 
 @NgModule({
   imports: [
@@ -33,13 +36,17 @@ import { ConsultUsersComponent } from './pages/consult-users/consult-users.compo
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatToolbarModule
   ],
   declarations: [
     ConsultUsersComponent,
     UserComponent,
     UserComponent,
-    ConsultUsersComponent
+    ConsultUsersComponent,
+    TableUsersComponent
   ],
   providers: [
     UserService,

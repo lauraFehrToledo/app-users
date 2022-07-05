@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { UserService } from '../../services/user.service';
 import { Location } from '@angular/common';
 import { UserConstants } from '../../user-constants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-consult-users',
@@ -25,7 +26,8 @@ export class ConsultUsersComponent implements OnInit, OnDestroy {
     public readonly constants: UserConstants,
     private readonly location: Location,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
     ) { }
 
   ngOnInit(): void {
@@ -43,7 +45,9 @@ export class ConsultUsersComponent implements OnInit, OnDestroy {
   private getUsersList() {
     const sus = this.userService.getUsers().subscribe( 
       res => {
-        this.usersList = res
+        this.usersList = res;
+      }, error => {
+        this._snackBar.open('Error: Failed to fetch users.', '', { duration: 5000 });
       }
     );
 
@@ -58,11 +62,22 @@ export class ConsultUsersComponent implements OnInit, OnDestroy {
 
   public deleteUser(idUser: number): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: {titulo: 'Eliminar usuario', mensaje: '¿Está seguro que desea eliminar este usuario?'}
+      data: {titulo: 'Delete user', mensaje: 'Are you sure?'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      if (result) {
+        const sus = this.userService.deleteUser(idUser).subscribe(
+          res => {
+            this._snackBar.open('User deleted successfully', '', {duration: 5000 });
+            this.getUsersList();
+          }, error => {
+            this._snackBar.open('Error: Failed to delete user.', '', { duration: 5000 });
+          }
+        );
+        this.suscripciones.add(sus);
+      }
     });
   }
 

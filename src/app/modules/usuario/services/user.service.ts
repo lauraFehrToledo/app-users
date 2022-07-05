@@ -23,7 +23,7 @@ export class UserService extends BaseService {
     const url = `${this.urlApi}`;
 
     // TODO Mock Servicio
-    const response = JSON.parse('[{"idUser":1, "username": "NA1111", "name":"Nombre1", "surnames":"Apellido1", "email":"email@email.com", "password":"12345678", "age":20, "active": true, "lastLoggin": "01/01/2022", "creationDate": "01/01/2022"}]');
+    const response = JSON.parse('[{"idUser":1, "username": "NA1111", "name":"Antonio", "surnames":"Alvarez", "email":"email@email.com", "password":"12345678", "age":20, "active": true, "lastLoggin": "01/01/2022", "creationDate": "01/01/2022"}]');
     return of(response);
     
     return this.realizarPeticionGet(url);
@@ -34,30 +34,29 @@ export class UserService extends BaseService {
     const url = `${this.urlApi}/${idUser}`;
 
     // TODO Mock Servicio
-    const response = JSON.parse('{"idUser":1, "username": "NA1111", "name":"Nombre1", "surnames":"Apellido1", "email":"email@email.com", "password":"12345678", "age":20, "active": true, "lastLoggin": "01/01/2022", "creationDate": "01/01/2022"}');
+    const response = JSON.parse('{"idUser":1, "username": "NA1111", "name":"Antonio", "surnames":"Alvarez", "email":"email@email.com", "password":"12345678", "age":20, "active": true, "lastLoggin": "01/01/2022", "creationDate": "01/01/2022"}');
     return of(response);
 
     return this.realizarPeticionGet(url);
   }
 
-    // Crear usuario
-    public crearActividad(user: User): Observable<User> {
-      const url = `${this.urlApi}`;
-  
-      return this.realizarPeticionPost(url, user);
-    }
+  // Crear usuario
+  public createUser(user: User): Observable<User> {
+    const url = `${this.urlApi}`;
 
+    return this.realizarPeticionPost(url, user);
+  }
   
   // Modificar usuario
-  public modificarActividad(user: User): Observable<User> {
+  public editUser(user: User): Observable<User> {
     const url = `${this.urlApi}`;
 
     return this.realizarPeticionPut(url, user);
   }
 
   // Eliminar usuario
-  public eliminarActividad(user: User): Observable<User> {
-    const url = `${this.urlApi}/${user.idUser}`;
+  public deleteUser(idUser: number): Observable<User> {
+    const url = `${this.urlApi}/${idUser}`;
     return this.realizarPeticionDelete(url);
   }
 

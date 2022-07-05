@@ -7,7 +7,12 @@ export class UserConstants {
     public readonly BTN_SAVE = 'Save';
     public readonly BTN_CANCEL = 'Cancel';
 
-    public readonly REQUIRED = 'Required field';
+    public readonly ERROR_REQUIRED = 'Required field';
+    public readonly ERROR_PATTERN_NUMBER = 'You can enter only numbers';
+    public readonly ERROR_EMAIL = 'Email must be a valid email address';
+    public readonly ERROR_MIN_LENGTH = 'Password must be at least 8 characters';
+    public readonly ERROR_PATTERN_STRING = 'You can enter only letters';
+
     
     public readonly DATA_USER = {
         username: 'Username',
