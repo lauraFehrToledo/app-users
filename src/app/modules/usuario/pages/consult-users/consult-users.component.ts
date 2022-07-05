@@ -66,7 +66,6 @@ export class ConsultUsersComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
       if (result) {
         const sus = this.userService.deleteUser(idUser).subscribe(
           res => {
